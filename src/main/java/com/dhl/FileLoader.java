@@ -22,8 +22,8 @@ public class FileLoader {
         HSSFWorkbook xssfWorkbook = new HSSFWorkbook();
         HSSFSheet sheet = xssfWorkbook.createSheet("2018-08");
         FileOutputStream fos = new FileOutputStream("C:\\Users\\arfa\\Desktop\\dhl\\201808.xls");
-        int count =0;
         String line;
+        int count =0;
         while((line=br.readLine())!=null){
             HSSFRow row = sheet.createRow(count);
             String[] strings = line.split("\\|");
@@ -33,9 +33,10 @@ public class FileLoader {
                 cell.setCellValue(strings[i]);
                 fos.flush();
             }
-            xssfWorkbook.write(fos);
             count++;
         }
+        xssfWorkbook.write(fos);
+        fos.flush();
         fos.close();
         br.close();
     }
