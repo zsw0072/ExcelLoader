@@ -25,7 +25,7 @@ public class POIExcelUtil {
     }
 
 
-    private static Object getValue(Cell cell) {
+    public static Object getValue(Cell cell) {
         Object obj = null;
         switch (cell.getCellType()) {
             case 4:

@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileConverter {
@@ -31,14 +33,20 @@ public class FileConverter {
         FileOutputStream fos = new FileOutputStream(dest);
         String line;
         int count =0;
+        List<String> list = new ArrayList<String>();
         while(sc.hasNextLine()){
             line = sc.nextLine();
+            String[] word = line.split("\\|");
             Row row = sheet.createRow(count);
-            String[] strings = line.split("\\|");
-            for (int i = 0; i < strings.length; i++) {
+            for (int i = 0; i < word.length; i++) {
+                list.add(word[i]);
+                if (i==0){
+                    list.remove(i);
+                    continue;
+                }
                 Cell cell = row.createCell(i);
                 cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                cell.setCellValue(strings[i]);
+                cell.setCellValue(word[i]);
                 fos.flush();
             }
             count++;
