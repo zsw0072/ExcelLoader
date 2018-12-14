@@ -5,7 +5,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,13 +15,12 @@ import java.util.Scanner;
 public class FileConverter {
 
     public static void main(String[] args) throws Exception {
-        String source = "c:\\users\\arfa\\desktop\\dhl\\CAO_201810ecom_base.txt";
+        String source = "C:\\Users\\Admin\\Desktop\\CAO_201811ecom_base.txt";
         ConvertTxtToExcel(source, source.replace(".txt",".xlsx"),
-                "2018-10");
+                "2018-11");
     }
 
     //convert the DHL monthly report to excel file
-    @Test
     public static void ConvertTxtToExcel(String source,String dest,String sheetName) throws Exception{
         
         FileInputStream fis = new FileInputStream(source);
@@ -33,22 +31,31 @@ public class FileConverter {
         FileOutputStream fos = new FileOutputStream(dest);
         String line;
         int count =0;
-        List<String> list = new ArrayList<String>();
         while(sc.hasNextLine()){
             line = sc.nextLine();
             String[] word = line.split("\\|");
-            Row row = sheet.createRow(count);
+            List<String> list = new ArrayList<String>();
             for (int i = 0; i < word.length; i++) {
-                list.add(word[i]);
-                if (i==0){
-                    list.remove(i);
-                    continue;
+                if (i==0||i==2||i==3||i==13||i==21||i==23
+                        ||i==24||i==34||i==35||i==37
+                        ||i==38||i==39||i==40||i==43
+                        ||i==44||i==47||i==49){
+                    word[i] = "taget";
                 }
-                Cell cell = row.createCell(i);
-                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                cell.setCellValue(word[i]);
-                fos.flush();
+                list.add(word[i]);
+                if (list.contains("taget")){
+                    list.remove("taget");
+                }
             }
+
+            Row row = sheet.createRow(count);
+            for (int j = 0; j < list.size(); j++) {
+                    Cell cell = row.createCell(j);
+                    cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                    cell.setCellValue(list.get(j));
+
+            }
+            fos.flush();
             count++;
         }
         sxssfWorkbook.write(fos);

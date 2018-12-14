@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -14,8 +15,9 @@ public class POIExcelUtil {
     public static Workbook getWorkBook(File file, InputStream in) throws IOException {
 
         Workbook workbook = null;
-
-        if (file.getName().endsWith(".xls")) {
+        if (file.length()>10240000) {
+            workbook = new SXSSFWorkbook(100);
+        }else if (file.getName().endsWith(".xls")) {
             workbook = new HSSFWorkbook(in);
         } else if (file.getName().endsWith(".xlsx")) {
             workbook = new XSSFWorkbook(in);
